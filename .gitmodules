@@ -1,0 +1,8 @@
+[submodule "claude-workbench"]
+	path = claude-workbench
+	url = https://github.com/iasolb/claude-workbench.git
+	branch = main
+[submodule "opencode-workbench"]
+	path = opencode-workbench
+	url = https://github.com/iasolb/opencode-workbench.git
+	branch = main
