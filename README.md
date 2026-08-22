@@ -8,6 +8,7 @@ repo view on GitHub; one machine, one brain.
 ```
 ai/
 ├── ai-memory-bank/        # clone of PRIVATE repo; the one shared brain
+├── state/                 # THE LANDING ZONE: machine state, in NO repo
 ├── claude/
 │   ├── claude-workbench/  # clone of PUBLIC config repo -> deploys to ~/.claude
 │   ├── dropoffs/          # local inbox: screenshots, phone files, uploads
@@ -19,6 +20,23 @@ ai/
     ├── bin/               # reference scripts/binaries opencode invokes
     └── work/              # active project checkouts
 ```
+
+## The landing zone, `ai/state/`
+
+Where automation writes what it observes, so a session reads one prepared file
+instead of rediscovering the machine every time. Git state per repo, queue
+counts, live and leaked ports, running processes, allowance health.
+
+**It is deliberately inside no git repository.** Not here, because this repo is
+public and a gitignored directory in a public repo fails silently. Not in the
+memory bank, because it is rewritten on every trigger and that means permanent
+churn plus conflicts between machines over facts that are not even shared: this
+machine's ports say nothing about the other one.
+
+The rule: **if it can be rebuilt on demand, it does not belong in git.**
+
+Every artifact is TOON and carries `produced_at`, so a reader treats it as true
+as of a moment rather than as live.
 
 ## Rules
 
