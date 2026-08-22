@@ -6,3 +6,7 @@
 	path = opencode-workbench
 	url = https://github.com/iasolb/opencode-workbench.git
 	branch = main
+[submodule "ai-memory-bank"]
+	path = ai-memory-bank
+	url = https://github.com/iasolb/ai-memory-bank.git
+	branch = windows
