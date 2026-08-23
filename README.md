@@ -57,5 +57,5 @@ true as of a moment rather than as live.
 
 ## Start here
 
-Read the layout tree above, then `ai/state/` — the landing zone — to see
+Read the layout tree above, then `ai/state/`, the landing zone, to see
 what this machine looks like right now.
