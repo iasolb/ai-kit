@@ -10,3 +10,7 @@
 	path = ai-memory-bank
 	url = https://github.com/iasolb/ai-memory-bank.git
 	branch = windows
+[submodule "n8n-workbench"]
+	path = n8n-workbench
+	url = https://github.com/iasolb/n8n-workbench.git
+	branch = main

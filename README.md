@@ -54,6 +54,7 @@ true as of a moment rather than as live.
 | `ai-memory-bank` | private | shared memory, all models reference it |
 | `claude-workbench` | public | Claude config + install scripts |
 | `opencode-workbench` | public | opencode config + install scripts |
+| `n8n-workbench` | public | n8n workflows + config |
 
 ## Start here
 
