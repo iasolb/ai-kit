@@ -1,0 +1,10 @@
+# THIS REPO IS PUBLIC. Both entries below are machine-local and carry absolute
+# paths, hostnames and full driver transcripts, so neither may ever be pushed.
+# Added 2026-09-07 after `state/` and `worktrees/` were found sitting untracked
+# with no ignore rule at all, one `git add -A` away from being published.
+
+# Driver verdicts, timings and launcher logs. tools/drive-lane.py writes here.
+state/
+
+# Per-lane git worktrees, created by tools/lane.* and tools/go.py.
+worktrees/
