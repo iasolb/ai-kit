@@ -8,3 +8,7 @@ state/
 
 # Per-lane git worktrees, created by tools/lane.* and tools/go.py.
 worktrees/
+
+# ~18 MB of Blackbaud OpenAPI specs, refetched by ai-memory-bank/tools/sky.py.
+# Vendor output, regenerable in one command, so it is a cache and not a record.
+sky-specs/
