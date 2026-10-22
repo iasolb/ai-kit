@@ -1,72 +1,39 @@
 # ai-kit
 
-The public map of how the AI tooling is laid out on a machine: one shared
-memory bank, a config workbench per model, and where each one deploys. For
-someone who wants to understand the structure before touching anything.
+Small standalone tools for working with AI coding agents, taken from a setup
+that runs Claude Code and opencode agents every day. Each file in `tools/` runs
+on its own with plain Python 3 (tested on 3.13) and carries a `--self-test`.
+These are the working copies, rough edges included, kept in sync with the
+private originals automatically.
 
-## Layout, as it actually is
+## Tools
+
+| tool | what it does for you |
+|---|---|
+| `gatefloor.py` | Runs a test gate and fails it unless at least N checks passed, so an agent cannot go green by deleting tests. |
+| `gate-selftest.py` | Counts the assertions a self-test really ran; one that printed nothing counts as zero, not as a pass. |
+| `check-confined.py` | Checks that a branch's diff stayed inside the files a task was allowed to touch. |
+| `check-tool-contracts.py` | Finds scripts that parse another script's human-readable output, and assertions hard-coded to pass. |
+| `summarize-log.py` | Summarizes a long log with a cheap hosted model over plain HTTP (needs `ZEN_API_KEY`). |
+| `prose-stats.py` | Word and dash counts for prose files, for keeping agent instructions short. |
+
+Try one: `python tools/gatefloor.py --self-test`
+
+## The layout this repo maps
+
+One shared memory bank (private) plus a public config workbench per tool, as
+git submodules: `claude-workbench` (Claude Code config template),
+`opencode-workbench` (opencode config template), `n8n-workbench` (n8n
+workflows and their compose file). `ai-memory-bank` is private, so fetch only
+the public children:
 
 ```
-ai-kit/
-├── ai-memory-bank/         # submodule, PRIVATE repo; the one shared brain
-├── claude-workbench/       # submodule, PUBLIC; generalized mirror of the Claude config
-├── opencode-workbench/     # submodule, PUBLIC; deploys to ~/.config/opencode
-└── n8n-workbench/          # submodule, PUBLIC; n8n workflows + config
+git clone https://github.com/iasolb/ai-kit.git
+git -C ai-kit submodule update --init claude-workbench opencode-workbench n8n-workbench
 ```
 
-The children are **submodules**, not loose clones, so a pointer here names one
-commit of each. Clone the whole thing with
-`git clone --recursive https://github.com/iasolb/ai-kit.git`; an existing clone
-picks them up with `git submodule update --init --recursive`.
+A submodule checks out detached; `git submodule status` shows each child's
+commit.
 
-**A submodule checkout is DETACHED by default, and that is the trap.** On
-2026-09-01 every child here came up detached, one of them 18 commits behind the
-branch it mirrors, while `git status` looked perfectly clean. Check with
-`git submodule status` and look for a branch name in the trailing parentheses.
-`ai-memory-bank/tools/sync-pin.py` is the one command that puts a child back on
-its branch, brings it current, and moves the pointer here.
-
-`ai-kit` is a sibling of `dev-kit`, `cloud-kit`, `data-kit` and `research-kit`;
-on a machine they sit together under one directory (`~/dev` on the Mac).
-
-## Not built yet, and deliberately listed as such
-
-An earlier version of this file drew a `state/`, `dropoffs/`, `bin/` and `work/`
-tree as though it existed. **None of it does**, on any machine, which made this
-map worse than no map: a reader cannot tell a plan from a fact. The intent
-below is still good, and it is intent.
-
-- **`state/`, a landing zone** where automation writes what it observes, so a
-  session reads one prepared file instead of rediscovering the machine every
-  time: git state per repo, queue counts, live and leaked ports, running
-  processes. It would sit **inside no git repository** (not here, because a
-  gitignored directory in a public repo fails silently; not in the memory bank,
-  because it is rewritten constantly and one machine's ports say nothing about
-  the other's). The rule behind it holds regardless: **if it can be rebuilt on
-  demand, it does not belong in git.**
-- **`dropoffs/`, `bin/` and `work/` per tool.** The drop-off inbox is parked on
-  purpose as of 2026-09-01, pending a decision about where session files land.
-
-## Rules
-
-- Memory bank is cloned **once per machine**, never once per tool.
-- **The memory bank installs ITSELF** (`ai-memory-bank/install/mac.sh`). The
-  workbench installer deploys the workbench, which is the generalized public
-  mirror; running it against a personal setup would replace real config with
-  template placeholders.
-
-## GitHub map
-
-| Repo | Visibility | Purpose |
-|---|---|---|
-| `ai-kit` | public | top-level map / storage umbrella |
-| `ai-memory-bank` | private | shared memory, all models reference it |
-| `claude-workbench` | public | Claude config + install scripts |
-| `opencode-workbench` | public | opencode config + install scripts |
-| `n8n-workbench` | public | n8n workflows + config |
-
-## Start here
-
-Read the layout tree above, then run `git submodule status` and confirm every
-child names a branch. If one is detached, it can be arbitrarily far behind while
-looking healthy, and nothing else you read here will be trustworthy.
+Siblings: `data-kit` (data tools), `cloud-kit` (machine and git sync),
+`dev-kit` (editor config), `research-kit` (the research libraries).
