@@ -18,6 +18,7 @@ private originals automatically.
 | `prose-stats.py` | Word and dash counts for prose files, for keeping agent instructions short. |
 | `toon.py` | Encodes JSON as TOON, a compact text format for handing structured data to a model (a list of same-shaped records becomes one header plus rows), decodes it back, and `check` proves a file round-trips without dropping a key. One file: `from toon import encode, decode`. |
 | `find-duplicates.py` | Finds the same paragraph written in two places across your markdown (agent instructions, docs, notes), skipping code blocks, tables and text marked superseded. Run it with `--root <repo> --paths docs rules`; needs `toon.py` beside it. |
+| `litter-check.py` | Lists the files that said they were temporary and outlived it: an `expires: YYYY-MM-DD` line near the top, a handoff brief superseded by a newer one, a stray script at the repo root. Reports, never deletes. `--root <repo>`; its lane check needs the setup it came from and says so when skipped. |
 
 Try one: `python tools/gatefloor.py --self-test`
 
